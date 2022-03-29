@@ -54,11 +54,21 @@ export const start = async () => {
       } else {
         console.info("Your version is the latest");
       }
-    } catch (err) {
-      console.error("Error while getting ElvUI version");
-      console.error(err);
-      return;
+    } catch (e) {
+      console.log("ICI");
+      if (e instanceof NotCriticalException) {
+        console.info("Forcing ElvUI download");
+        await updateElvUI();
+    } else if (e instanceof CriticalException) {
+        console.error("Critical error, could not update ElVUI, check configuration")
+    } else {
+      console.error("Critical error, could not update ElVUI")
     }
+  } 
+  } else {
+    console.info("Forcing ElvUI download");
+    onlineVersion = await getOnlineElvuiVersion()
+    await updateElvUI();
   }
 };
 

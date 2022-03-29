@@ -1,5 +1,5 @@
 const config = {
-  wow_folder: "C:/Users/longle_h/Documents/GitHub/auto-update-elvui/wow_test/",
+  wow_folder: "C:/Users/longle_h/Documents/GitHub/auto-update-elvui/wow_test_empty/",
   elvui_website: "https://www.tukui.org/",
   elvui_page: "download.php?ui=elvui",
 };

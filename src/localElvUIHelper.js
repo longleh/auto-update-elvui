@@ -1,5 +1,6 @@
 import fs from "fs";
 import { getWowFolder } from "./getConfig.js";
+import NotCriticalException from "./exceptions/NotCriticalException.js";
 
 export const getElvUIVersion = async () => {
   const elvuiMetadataFile = getWowFolder().concat(
@@ -7,14 +8,17 @@ export const getElvUIVersion = async () => {
   );
   return new Promise((resolve, reject) => {
     fs.readFile(elvuiMetadataFile, "utf8", function (err, data) {
-      if (err) return reject("Cannot find ElvUI Metadata");
+      if (err) {
+        console.log('ICI');
+        return reject(new NotCriticalException("Cannot find ElvUI Metadata"));
+      }
       const lines = data.split("\n");
       const versionLine = lines.find((line) => line.includes("## Version:"));
-      if (!versionLine) return reject("Cannot parse ElvUI version");
+      if (!versionLine) return reject(new NotCriticalException("Cannot parse ElvUI version"));
       const versionLineSplitted = versionLine.split(":");
 
       if (versionLineSplitted.length < 1)
-        return reject("Cannot parse ElvUI version");
+        return reject(new NotCriticalException("Cannot parse ElvUI version"));
       return resolve(Number.parseFloat(versionLineSplitted[1]));
     });
   });
