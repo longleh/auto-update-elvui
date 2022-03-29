@@ -1,10 +1,10 @@
-import config from "../config.js";
 import fs from "fs";
 import { getElvUIVersion } from "./localElvUIHelper.js";
 import { getOnlineElvuiVersion, downloadElvUI } from "./onlineElvUIHelper.js";
+import { getWowFolder } from "./getConfig.js";
 
 export const start = async () => {
-    const wowFolder = config.wow_folder;
+    const wowFolder = getWowFolder();
     const wowFolders = fs.readdirSync(
       wowFolder.concat("/_retail_/Interface/Addons")
     );
