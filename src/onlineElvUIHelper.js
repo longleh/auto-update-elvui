@@ -1,6 +1,7 @@
 import fs from "fs";
 import { getElvuiWebsite, getElvuiPage } from "./getConfig.js";
 import axios from "axios";
+import CriticalException from "./exceptions/CriticalException.js";
 
 export const getDownloadLine = async () => {
   try {
@@ -8,17 +9,16 @@ export const getDownloadLine = async () => {
     const dataLines = data.split("\n");
     return dataLines.find((line) => line.includes("Download ElvUI"));
   } catch {
-    console.error(e);
-    throw new Error("Cannot reach ElvUI website");
+    throw new CriticalException("Cannot reach ElvUI website");
   }
 };
 
 export const getOnlineElvuiVersion = async () => {
   console.info("Checking ElvUI online version");
   const htmlLines = await getDownloadLine();
-  if (!htmlLines) throw new Error("Cannot parse ElvUI online version");
+  if (!htmlLines) throw new CriticalException("Cannot parse ElvUI online version");
   const splittedLine = htmlLines.split("Download ElvUI");
-  if (splittedLine.length < 1) throw Error("Cannot parse ElvUI online version");
+  if (splittedLine.length < 1) throw CriticalException("Cannot parse ElvUI online version");
   const versionLine = splittedLine[1].trim();
   let version = "";
   let i = 0;
@@ -30,22 +30,22 @@ export const getOnlineElvuiVersion = async () => {
     i++;
   }
   if (Number.parseFloat(version) === 0)
-    throw Error("Cannot parse ElvUI online version");
+    throw CriticalException("Cannot parse ElvUI online version");
   return Number.parseFloat(version);
 };
 
 export const downloadElvUI = async (onlineVersion) => {
   console.info("Downloading Elvui");
   const htmlLines = await getDownloadLine();
-  if (!htmlLines) throw new Error("Cannot parse ElvUI online version");
+  if (!htmlLines) throw new CriticalException("Cannot parse ElvUI online version");
 
   const linkLines = htmlLines.split('"');
   if (linkLines.length === 0)
-    throw Exception("Cannot parse ElvUI download link");
+    throw new CriticalException("Cannot parse ElvUI download link");
   const downloadLink = linkLines.find((line) =>
     line.includes(onlineVersion + ".zip")
   );
-  if (!downloadLink) throw Exception("Cannot find ElvUI download link");
+  if (!downloadLink) throw new CriticalException("Cannot find ElvUI download link");
   const { data } = await axios({
     url: `${getElvuiWebsite()}${downloadLink}`,
     method: "GET",

@@ -28,7 +28,7 @@ it("checks that not installed is managed", async () => {
     );
     await getElvUIVersion();
   } catch (e) {
-    expect(e).toMatch("Cannot find ElvUI Metadata");
+    expect(e.message).toMatch("Cannot find ElvUI Metadata");
   }
 });
 
@@ -39,7 +39,7 @@ it("checks when metada are not found", async () => {
     );
     await getElvUIVersion();
   } catch (e) {
-    expect(e).toMatch("Cannot find ElvUI Metadata");
+    expect(e.message).toMatch("Cannot find ElvUI Metadata");
   }
 });
 
@@ -50,7 +50,7 @@ it("checks when metada are not parsable", async () => {
     );
     await getElvUIVersion();
   } catch (e) {
-    expect(e).toMatch("Cannot parse ElvUI version");
+    expect(e.message).toMatch("Cannot parse ElvUI version");
   }
 });
 
@@ -61,6 +61,6 @@ it("checks when metada are not parsable 2", async () => {
     );
     await getElvUIVersion();
   } catch (e) {
-    expect(e).toMatch("Cannot parse ElvUI version");
+    expect(e.message).toMatch("Cannot parse ElvUI version");
   }
 });
