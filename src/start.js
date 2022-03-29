@@ -1,4 +1,5 @@
 import fs from "fs";
+import decompress from "decompress";
 import { getElvUIVersion } from "./localElvUIHelper.js";
 import { getOnlineElvuiVersion, downloadElvUI } from "./onlineElvUIHelper.js";
 import { getWowFolder } from "./getConfig.js";
@@ -8,7 +9,6 @@ let onlineVersion = 0;
 
 const isElvuiInstalled = () => {
   const wowFolder = getWowFolder();
-  console.log(wowFolder);
   const wowFolders = fs.readdirSync(
     wowFolder.concat("/_retail_/Interface/Addons")
   );
@@ -28,19 +28,29 @@ const shouldInstallElvUI = async () => {
   return version < onlineVersion;
 };
 
+const unzipElvUI = async (fileName) => {
+  console.info('Start unzipping')
+  return decompress(`./${fileName}`, getWowFolder().concat("/_retail_/Interface/Addons"))
+}
+
+const updateElvUI = async() => {
+  console.info("Updating start...");
+  const fileName = await downloadElvUI(onlineVersion);
+  await unzipElvUI(fileName)
+  fs.unlink(fileName, (err) => {
+    if (err)
+      console.error(
+        "Could not remove zip file of ElvUI you may want to delete it manually"
+      );
+  });
+}
+
 export const start = async () => {
   if (isElvuiInstalled()) {
     console.info("ElvUI installed, checking version...");
     try {
       if (await shouldInstallElvUI()) {
-        console.info("Updating start...");
-        const fileName = await downloadElvUI(onlineVersion);
-        fs.unlink(fileName, (err) => {
-          if (err)
-            console.error(
-              "Could not remove zip file of ElvUI you may want to delete it manually"
-            );
-        });
+        await updateElvUI()
       } else {
         console.info("Your version is the latest");
       }

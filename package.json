@@ -10,7 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.26.1"
+    "axios": "^0.26.1",
+    "decompress": "^4.2.1"
   },
   "type": "module",
   "devDependencies": {
