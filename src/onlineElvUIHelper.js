@@ -9,7 +9,7 @@ export const getDownloadLine = async () => {
     );
     const dataLines = data.split("\n");
     return dataLines.find((line) => line.includes("Download ElvUI"));
-  } catch(e) {
+  } catch {
     console.error(e)
     throw new Error('Cannot reach ElvUI website')
   }
@@ -32,6 +32,7 @@ export const getOnlineElvuiVersion = async () => {
       version += versionLine[i];
       i++;
     }
+    if (Number.parseFloat(version) === 0) throw Error("Cannot parse ElvUI online version")
     return Number.parseFloat(version);
   };
   

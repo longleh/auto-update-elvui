@@ -9,6 +9,10 @@ jest.mock('../src/getConfig.js', () => ({
   getElvuiPage: jest.fn()
 }))
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 it("checks that online elvui version is 12.75", async () => {
   const content = fs.readFileSync('./tests/mockFiles/ElvUIWebsite/version_found/download.html', 'utf8')
   axios.get.mockResolvedValue({data: content})
@@ -16,12 +20,32 @@ it("checks that online elvui version is 12.75", async () => {
   expect(elvuiVersion).toBe(12.75);
 });
 
-it("checks that unreachable website is handled", async () => {
-  getElvuiPage.mockReturnValue('')
-  getElvuiWebsite.mockReturnValue('')
+it("checks that unparsable (no download text) is handled", async () => {
+  const content = fs.readFileSync('./tests/mockFiles/ElvUIWebsite/unparsable_version/download.html', 'utf8')
+  axios.get.mockResolvedValue({data: content})
   try {
     await getOnlineElvuiVersion();
   } catch (e) {
-    expect(e.message).toMatch("Cannot reach ElvUI website");
+   expect(e.message).toMatch("Cannot parse ElvUI online version");
+  }
+});
+
+it("checks that unparsable (no version) is handled", async () => {
+  const content = fs.readFileSync('./tests/mockFiles/ElvUIWebsite/unparsable_version/download_2.html', 'utf8')
+  axios.get.mockResolvedValue({data: content})
+  try {
+    await getOnlineElvuiVersion();
+  } catch (e) {
+   expect(e.message).toMatch("Cannot parse ElvUI online version");
+  }
+});
+
+it("checks that unparsable (no version but text after) is handled", async () => {
+  const content = fs.readFileSync('./tests/mockFiles/ElvUIWebsite/unparsable_version/download_3.html', 'utf8')
+  axios.get.mockResolvedValue({data: content})
+  try {
+    await getOnlineElvuiVersion();
+  } catch (e) {
+   expect(e.message).toMatch("Cannot parse ElvUI online version");
   }
 });

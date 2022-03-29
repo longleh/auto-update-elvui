@@ -8,7 +8,6 @@ export const getElvuiWebsite = () => {
     return config.elvui_website
 }
 
-// mostly for testing purpose
 export const getElvuiPage = () => {
     return config.elvui_page
 }
