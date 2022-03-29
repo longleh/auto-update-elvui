@@ -3,40 +3,53 @@ import { getElvUIVersion } from "./localElvUIHelper.js";
 import { getOnlineElvuiVersion, downloadElvUI } from "./onlineElvUIHelper.js";
 import { getWowFolder } from "./getConfig.js";
 
-export const start = async () => {
-    const wowFolder = getWowFolder();
-    const wowFolders = fs.readdirSync(
-      wowFolder.concat("/_retail_/Interface/Addons")
-    );
-    const isElvuiInstalled = !!(
-      wowFolders.find((folder) => folder === "ElvUI") &&
-      wowFolders.find((folder) => folder === "ElvUI_OptionsUI")
-    );
-    if (isElvuiInstalled) {
-      console.info("ElvUI installed, checking version...");
-      try {
-        const version = await getElvUIVersion(wowFolder);
-        console.info("Current ElvUI version installed is " + version);
-        const onlineVersion = await getOnlineElvuiVersion();
-        console.info("Current ElvUI online version is " + onlineVersion);
-        if (version < onlineVersion) {
-          console.info("Updating start...");
-          const fileName = await downloadElvUI(onlineVersion);
-          fs.unlink(fileName, (err) => {
-            if (err)
-              console.error(
-                "Could not remove zip file of ElvUI you may want to delete it manually"
-              );
-          });
-        } else {
-          console.info("Your version is the latest");
-        }
-      } catch (err) {
-        console.error("Error while getting ElvUI version");
-        console.error(err);
-        return;
-      }
-    }
-  };
+let localVersion = 0;
+let onlineVersion = 0;
 
-  export default start
+const isElvuiInstalled = () => {
+  const wowFolder = getWowFolder();
+  console.log(wowFolder);
+  const wowFolders = fs.readdirSync(
+    wowFolder.concat("/_retail_/Interface/Addons")
+  );
+  return !!(
+    wowFolders.find((folder) => folder === "ElvUI") &&
+    wowFolders.find((folder) => folder === "ElvUI_OptionsUI")
+  );
+};
+
+const shouldInstallElvUI = async () => {
+  const version = await getElvUIVersion();
+  console.info("Current ElvUI version installed is " + version);
+  const parsedOnlineVersion = await getOnlineElvuiVersion();
+  console.info("Current ElvUI online version is " + parsedOnlineVersion);
+  localVersion = version;
+  onlineVersion = parsedOnlineVersion;
+  return version < onlineVersion;
+};
+
+export const start = async () => {
+  if (isElvuiInstalled()) {
+    console.info("ElvUI installed, checking version...");
+    try {
+      if (await shouldInstallElvUI()) {
+        console.info("Updating start...");
+        const fileName = await downloadElvUI(onlineVersion);
+        fs.unlink(fileName, (err) => {
+          if (err)
+            console.error(
+              "Could not remove zip file of ElvUI you may want to delete it manually"
+            );
+        });
+      } else {
+        console.info("Your version is the latest");
+      }
+    } catch (err) {
+      console.error("Error while getting ElvUI version");
+      console.error(err);
+      return;
+    }
+  }
+};
+
+export default start;

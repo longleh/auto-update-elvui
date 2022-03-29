@@ -1,13 +1,13 @@
-import config from "./config.js"
+import config from "./config.js";
 
 export const getWowFolder = () => {
-    return config.wow_folder
-}
+  return config.wow_folder;
+};
 
 export const getElvuiWebsite = () => {
-    return config.elvui_website
-}
+  return config.elvui_website;
+};
 
 export const getElvuiPage = () => {
-    return config.elvui_page
-}
+  return config.elvui_page;
+};
