@@ -1,24 +1,60 @@
 {
-  "name": "updateelvui",
+  "name": "auto-update-elvui",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "description": "Simple electron app to update your elvui version with one button",
+  "main": "./app/modules/main/main.js",
   "scripts": {
-    "start": "node ./src/main.js",
-    "test": "jest"
+    "start": "babel src --out-dir app && electron-forge start",
+    "test": "jest",
+    "package": "babel src --out-dir app && electron-forge package",
+    "make": "babel src --out-dir app && electron-forge make"
   },
-  "author": "",
+  "author": "longle_h",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.26.1",
-    "decompress": "^4.2.1"
+    "decompress": "^4.2.1",
+    "electron-squirrel-startup": "^1.0.0"
   },
-  "type": "module",
+  "type": "commonjs",
   "devDependencies": {
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.8",
     "@babel/preset-env": "^7.16.11",
+    "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron-forge/maker-deb": "^6.0.0-beta.63",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@electron-forge/maker-zip": "^6.0.0-beta.63",
+    "electron": "^18.0.0",
     "jest": "^27.5.1",
     "prettier": "2.6.1"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "updateelvui"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }
