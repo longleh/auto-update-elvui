@@ -3,9 +3,16 @@
     [
       "@babel/preset-env",
       {
-        "targets": {
-          "node": "current"
-        }
+        "targets": "defaults"
+      }
+    ]
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "absoluteRuntime": false,
+        "regenerator": true
       }
     ]
   ]
