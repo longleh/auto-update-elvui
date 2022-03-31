@@ -1,5 +1,7 @@
-import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron'
 import path from 'path'
+import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron'
+import { getElvUIVersion } from '../../helpers/localElvUIHelper.js'
+import { getOnlineElvuiVersion } from '../../helpers/onlineElvUIHelper.js'
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -12,18 +14,22 @@ function createWindow () {
 
   win.loadFile('./view/index.html')
 
-  ipcMain.handle('dark-mode:toggle', () => {
-    if (nativeTheme.shouldUseDarkColors) {
-      nativeTheme.themeSource = 'light'
-    } else {
-      nativeTheme.themeSource = 'dark'
+  ipcMain.handle('elvui-version:local', () => {
+    try {
+      return getElvUIVersion()
+    } catch (e) {
+      return e.message
     }
-    return nativeTheme.shouldUseDarkColors
   })
 
-  ipcMain.handle('dark-mode:system', () => {
-    nativeTheme.themeSource = 'system'
+  ipcMain.handle('elvui-version:online', () => {
+    try {
+      return getOnlineElvuiVersion()
+    } catch (e) {
+      return e.message
+    }
   })
+
 }
 
 app.whenReady().then(() => {

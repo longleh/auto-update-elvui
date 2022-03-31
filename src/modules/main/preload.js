@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
-contextBridge.exposeInMainWorld('darkMode', {
-  toggle: () => ipcRenderer.invoke('dark-mode:toggle'),
-  system: () => ipcRenderer.invoke('dark-mode:system')
+contextBridge.exposeInMainWorld('elvuiVersion', {
+  local: () => ipcRenderer.invoke('elvui-version:local'),
+  online: () => ipcRenderer.invoke('elvui-version:online')
 })
