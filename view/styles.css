@@ -1,0 +1,31 @@
+.container.flex-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+
+.card {
+  border: 1px rgba(255,255,255,0.7) solid;
+  border-radius: 2%;
+  margin: 16px;
+  padding: 16px;
+  width: 30%;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+body {
+  background: #161b22;
+  color: rgba(255,255,255,0.7)
+}
+
+.version-label{
+  text-align: center;
+}
+
+.version-number {
+  text-align: center;
+}

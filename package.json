@@ -4,7 +4,7 @@
   "description": "Simple electron app to update your elvui version with one button",
   "main": "./app/modules/main/main.js",
   "scripts": {
-    "start": "babel src --out-dir app && electron-forge start",
+    "start": "babel src --out-dir app && electron .",
     "test": "jest",
     "package": "babel src --out-dir app && electron-forge package",
     "make": "babel src --out-dir app && electron-forge make"
