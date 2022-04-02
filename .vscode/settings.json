@@ -1,0 +1,6 @@
+{
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "html-css-class-completion.enableEmmetSupport": true,
+    "html-css-class-completion.enableFindUsage": true
+}

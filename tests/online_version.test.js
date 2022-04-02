@@ -1,6 +1,6 @@
 import axios from "axios";
 import fs from "fs";
-import { getOnlineElvuiVersion } from "../src/onlineElvUIHelper.js";
+import { getOnlineElvuiVersion } from "../src/helpers/onlineElvUIHelper.js";
 
 jest.mock("axios");
 

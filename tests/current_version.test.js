@@ -1,7 +1,7 @@
-import { getElvUIVersion } from "../src/localElvUIHelper.js";
-import { getWowFolder } from "../src/getConfig.js";
+import { getElvUIVersion } from "../src/helpers/localElvUIHelper.js";
+import { getWowFolder } from "../src/config/getConfig.js";
 
-jest.mock("../src/getConfig.js", () => ({
+jest.mock("../src/config/getConfig.js", () => ({
   getWowFolder: jest.fn(),
 }));
 

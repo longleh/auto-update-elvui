@@ -5,7 +5,7 @@ import CriticalException from "../exceptions/CriticalException.js";
 
 export const getDownloadLine = async () => {
   try {
-    return '<a href="/downloads/elvui-12.75.zip" class="btn btn-mod btn-border-w btn-round btn-large">Download ElvUI 12.75</a>'
+    return '<a href="elvui-12.75.zip" class="btn btn-mod btn-border-w btn-round btn-large">Download ElvUI 12.75</a>'
     const { data } = await axios.get(`${getElvuiWebsite()}${getElvuiPage()}`);
     const dataLines = data.split("\n");
     return dataLines.find((line) => line.includes("Download ElvUI"));
