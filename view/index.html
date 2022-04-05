@@ -2,15 +2,30 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Update ElvUI</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link rel="stylesheet" type="text/css" href="./styles.css">
 </head>
 <body>
-    <p>Current ElvUI version: <span id="current-version"></span></p>
-    <p>Online ElvUI version: <span id="online-version"></span></p>
-    <button id="start">Start</button>
+  <div class="container">
+    <div class="container flex-container"> <!-- Flex Container -->
+      <div class="card"> <!-- Card -->
+        <h3 class="version-label">Local ElvUI Version</h3>
+        <h2 class="version-number" id="current-version"></h2>
+      </div>
+      <div class="card"> <!-- Card -->
+        <h3 class="version-label">Online ElvUI Version</h3>
+        <h2 class="version-number"id="online-version"></h2>
+      </div>
+    </div>
+  </div>
+  <div class="container flex-container">
+    <button id="start" class="button">Download latest version</button>
+    <button id="configuration" class="button">Parameters</button>
+  </div>
+  <div class="container flex-container">
+    <p id="status"></p>
+  </div>
     <script src="./renderer.js"></script>
-  </body>
 </body>
 </html>

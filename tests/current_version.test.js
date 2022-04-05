@@ -1,7 +1,7 @@
-import { getElvUIVersion } from "../src/localElvUIHelper.js";
-import { getWowFolder } from "../src/getConfig.js";
+import { getElvUIVersion } from "../src/helpers/localElvUI.js";
+import { getWowFolder } from "../src/config/getConfig.js";
 
-jest.mock("../src/getConfig.js", () => ({
+jest.mock("../src/config/getConfig.js", () => ({
   getWowFolder: jest.fn(),
 }));
 
@@ -23,7 +23,7 @@ it("checks that current elvui version is 12.75", async () => {
 
 it("checks that not installed is managed", async () => {
   try {
-    getWowFolder.mockReturnValueOnce(
+    getWowFolder.mockReturnValue(
       "./tests/mockFiles/ElvUILocalVersion/not_installed"
     );
     await getElvUIVersion();
@@ -34,7 +34,7 @@ it("checks that not installed is managed", async () => {
 
 it("checks when metada are not found", async () => {
   try {
-    getWowFolder.mockReturnValueOnce(
+    getWowFolder.mockReturnValue(
       "./tests/mockFiles/ElvUILocalVersion/unable_to_find_version"
     );
     await getElvUIVersion();

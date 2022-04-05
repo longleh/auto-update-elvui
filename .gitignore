@@ -2,3 +2,5 @@ wow_test/*
 node_modules/*
 app/*
 out/*
+_auto_update_elvui.config.json
+*.zip
