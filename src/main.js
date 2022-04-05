@@ -1,5 +1,6 @@
 import path from "path";
 import decompress from "decompress";
+import fs from "fs";
 import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import { getElvUIVersion } from "./helpers/localElvUI.js";
 import { downloadElvUI, getOnlineElvuiVersion } from "./helpers/onlineElvUI.js";
@@ -9,7 +10,7 @@ import {
   setWowFolder,
 } from "./config/getConfig.js";
 import { APP_STATES, stateManager } from "./helpers/stateManager.js";
-import { statusManager } from "./helpers/statusManager.js";
+import { resetStatus, statusManager } from "./helpers/statusManager.js";
 
 let onlineVersion = 0;
 
@@ -25,7 +26,8 @@ const updateWowFolder = async () => {
 };
 
 const unzipElvUI = async (fileName) => {
-  console.info("Start unzipping");
+  const [_, setStatus] = statusManager();
+  setStatus({ type: "info", message: "Start unzipping" });
   return decompress(
     `./${fileName}`,
     getWowFolder().concat("/_retail_/Interface/Addons")
@@ -41,11 +43,13 @@ const createWindow = () => {
     },
   });
   const [state, setState] = stateManager(win);
+  const [_, setStatus] = statusManager();
 
   setState(APP_STATES.LOADING);
 
   if (!isWowFolderConfigured()) {
     setState(APP_STATES.CONFIGURATION);
+    resetStatus();
   } else {
     setTimeout(() => setState(APP_STATES.INSTALLATION), 2000);
   }
@@ -61,6 +65,7 @@ const createWindow = () => {
   ipcMain.handle("elvui-version:online", async () => {
     try {
       onlineVersion = await getOnlineElvuiVersion();
+      resetStatus();
       return onlineVersion;
     } catch (e) {
       return e.message;
@@ -71,16 +76,25 @@ const createWindow = () => {
     try {
       const zipLocation = await downloadElvUI(onlineVersion);
       await unzipElvUI(zipLocation);
-      console.info("Finishing dezipping");
-      fs.unlink(fileName, (err) => {
-        if (err)
-          console.error(
-            "Could not remove zip file of ElvUI you may want to delete it manually"
-          );
-        app.quit();
+      setStatus({
+        type: "info",
+        message: "New version dezipped, trying to remove archive",
+      });
+      fs.unlink("./" + zipLocation, (err) => {
+        if (err) {
+          setStatus({
+            type: "warning",
+            message: `ElvUI Version ${onlineVersion} is installed but couldn't remove archive, you may want to delete it manually.`,
+          });
+        } else {
+          setStatus({
+            type: "ok",
+            message: `Installation of version ${onlineVersion} finished, you can close the app`,
+          });
+        }
       });
     } catch (e) {
-      return e.message;
+      setStatus({ type: "error", message: e.message });
     }
   });
 
@@ -90,20 +104,24 @@ const createWindow = () => {
 
   ipcMain.handle("wow-folder:update", async () => {
     const wowFolder = await updateWowFolder();
+    resetStatus();
     if (wowFolder !== "") setState(APP_STATES.INSTALLATION);
     return wowFolder;
   });
 
-  ipcMain.handle("wow-folder:back", async () =>
-    setState(APP_STATES.INSTALLATION)
-  );
+  ipcMain.handle("navigation:installation", async () => {
+    resetStatus();
+    setState(APP_STATES.INSTALLATION);
+  });
 
-  ipcMain.handle("wow-folder:configuration", async () =>
-    setState(APP_STATES.CONFIGURATION)
-  );
+  ipcMain.handle("navigation:configuration", async () => {
+    resetStatus();
+    setState(APP_STATES.CONFIGURATION);
+  });
 
-  ipcMain.handle("status:message", () => {
-    return statusManager();
+  ipcMain.handle("status:get", () => {
+    const [status, _] = statusManager();
+    return status;
   });
 };
 

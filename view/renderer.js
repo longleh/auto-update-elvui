@@ -1,8 +1,9 @@
 const downloadButton = document.getElementById("start");
 const configurationButton = document.getElementById("configuration");
+const statusElement = document.getElementById("status");
 
 configurationButton.addEventListener("click", async () => {
-  await window.wowFolder.configuration();
+  await window.navigation.configuration();
 });
 
 downloadButton.addEventListener("click", async () => {
@@ -14,6 +15,14 @@ downloadButton.addEventListener("click", async () => {
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
+  console.log("ICIIIII");
+  setInterval(async () => {
+    const status = await window.statusManager.status();
+    console.log(status);
+    statusElement.className = "status-" + status.type;
+    statusElement.innerText = status.message;
+  }, 200);
+
   try {
     document.getElementById("current-version").innerHTML =
       (await window.elvuiVersion.local()) ??

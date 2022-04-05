@@ -9,7 +9,7 @@ btn.addEventListener("click", async () => {
 
 btnBack.addEventListener("click", async () => {
   if ((await window.wowFolder.get()) !== "") {
-    await window.wowFolder.back();
+    await window.navigation.installation();
   }
 });
 
@@ -20,5 +20,5 @@ document.addEventListener("DOMContentLoaded", async () => {
       filePathElement.innerText = localWowFolder;
       btnBack.hidden = false;
     }
-  }, 1000);
+  }, 200);
 });

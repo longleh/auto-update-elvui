@@ -12,3 +12,12 @@ contextBridge.exposeInMainWorld("wowFolder", {
   back: () => ipcRenderer.invoke("wow-folder:back"),
   configuration: () => ipcRenderer.invoke("wow-folder:configuration"),
 });
+
+contextBridge.exposeInMainWorld("navigation", {
+  installation: () => ipcRenderer.invoke("navigation:installation"),
+  configuration: () => ipcRenderer.invoke("navigation:configuration"),
+});
+
+contextBridge.exposeInMainWorld("statusManager", {
+  status: () => ipcRenderer.invoke("status:get"),
+});

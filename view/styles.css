@@ -67,3 +67,24 @@ body {
   border: 1px #161b22 solid;
   transition: 500ms;
 }
+
+#status {
+  font-size: 12px;
+  margin-top: 32px;
+}
+
+.status-error {
+  color: red;
+}
+
+.status-info {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.status-ok {
+  color: green;
+}
+
+.status-warning {
+  color: yellow;
+}

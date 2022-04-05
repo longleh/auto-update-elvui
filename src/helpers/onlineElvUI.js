@@ -2,6 +2,7 @@ import fs from "fs";
 import axios from "axios";
 import { getElvuiWebsite, getElvuiPage } from "../config/getConfig.js";
 import CriticalException from "../exceptions/CriticalException.js";
+import { statusManager } from "./statusManager.js";
 
 export const getDownloadLine = async () => {
   try {
@@ -14,7 +15,8 @@ export const getDownloadLine = async () => {
 };
 
 export const getOnlineElvuiVersion = async () => {
-  console.info("Checking ElvUI online version");
+  const [_, setStatus] = statusManager();
+  setStatus({ type: "info", message: "Checking ElvUI online version" });
   const htmlLines = await getDownloadLine();
   if (!htmlLines)
     throw new CriticalException("Cannot parse ElvUI online version");
@@ -37,7 +39,8 @@ export const getOnlineElvuiVersion = async () => {
 };
 
 export const downloadElvUI = async (onlineVersion) => {
-  console.info("Downloading Elvui");
+  const [_, setStatus] = statusManager();
+  setStatus({ type: "info", message: "Downloading Elvui" });
   const htmlLines = await getDownloadLine();
   if (!htmlLines)
     throw new CriticalException("Cannot parse ElvUI online version");
@@ -58,7 +61,10 @@ export const downloadElvUI = async (onlineVersion) => {
   return new Promise((resolve, reject) => {
     fs.writeFile(`ElvUI-${onlineVersion}.zip`, data, function (err) {
       if (err) reject(err);
-      console.info(`ElvUI version ${onlineVersion} downloaded`);
+      setStatus({
+        type: "Info",
+        message: `ElvUI version ${onlineVersion} downloaded`,
+      });
       resolve(`ElvUI-${onlineVersion}.zip`);
     });
   });

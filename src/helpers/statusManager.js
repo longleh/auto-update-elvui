@@ -7,3 +7,5 @@ export const statusManager = () => [
     return _currentStatus;
   },
 ];
+
+export const resetStatus = () => (_currentStatus = { status: "", message: "" });
