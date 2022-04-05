@@ -1,23 +1,27 @@
-const downloadButton = document.getElementById('start')
-downloadButton.addEventListener("click", async() => {
-  downloadButton.disabled = true
-  await window.elvuiVersion.download()
-  downloadButton.disabled = false
-})
+const downloadButton = document.getElementById("start");
+const configurationButton = document.getElementById("configuration");
 
-const btn = document.getElementById('wow-folder')
-const filePathElement = document.getElementById('filePath')
+configurationButton.addEventListener("click", async () => {
+  await window.wowFolder.configuration();
+});
 
-btn.addEventListener('click', async () => {
-  const filePath = await window.wowFolder.update()
-  filePathElement.innerText = filePath
-})
+downloadButton.addEventListener("click", async () => {
+  downloadButton.disabled = true;
+  await window.elvuiVersion.download();
+  downloadButton.disabled = false;
+  document.getElementById("current-version").innerHTML =
+    (await window.elvuiVersion.local()) ?? "Error";
+});
 
 document.addEventListener("DOMContentLoaded", async () => {
-    try {
-      document.getElementById("current-version").innerHTML = await window.elvuiVersion.local() ?? 'Cannot find ElvUI, check your wow folder'
-      document.getElementById("online-version").innerHTML = await window.elvuiVersion.online() ?? 'Error while getting online ElvUI version'
-    } catch(e) {
-      console.log(e)
-    }
-  })
+  try {
+    document.getElementById("current-version").innerHTML =
+      (await window.elvuiVersion.local()) ??
+      "Cannot find ElvUI, check your wow folder";
+    document.getElementById("online-version").innerHTML =
+      (await window.elvuiVersion.online()) ??
+      "Error while getting online ElvUI version";
+  } catch (e) {
+    console.log(e);
+  }
+});

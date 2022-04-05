@@ -6,7 +6,7 @@
 }
 
 .card {
-  border: 1px rgba(255,255,255,0.7) solid;
+  border: 1px rgba(255, 255, 255, 0.7) solid;
   border-radius: 2%;
   margin: 16px;
   padding: 16px;
@@ -19,13 +19,51 @@
 
 body {
   background: #161b22;
-  color: rgba(255,255,255,0.7)
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.version-label{
+.version-label {
   text-align: center;
 }
 
 .version-number {
   text-align: center;
+}
+
+.meta-configuration-container {
+  display: flex;
+  justify-content: center;
+}
+
+.configuration-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 75%;
+}
+
+.button {
+  border: 1px rgba(255, 255, 255, 0.7) solid;
+  width: 25%;
+  padding: 8px;
+  border-radius: 5%;
+  background-color: unset;
+  color: unset;
+  margin: 8px;
+  transition: 500ms;
+}
+
+.button:hover {
+  color: #161b22;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px #161b22 solid;
+  transition: 500ms;
+}
+
+.button:disabled {
+  color: #161b22;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px #161b22 solid;
+  transition: 500ms;
 }
