@@ -32,7 +32,12 @@ npm tests
 
 The first time you start the `.exe` it will ask you for your **WOW FOLDER** (not your addon folder) , use the explorer and select your folder
 
+![Parameter Page](https://user-images.githubusercontent.com/33480010/161818163-2f0509ea-5104-49b6-816d-2ce09e9e54c4.png)
+
+
 You can go back to the configuration via the **Parameters** button
+![Parameter button](https://user-images.githubusercontent.com/33480010/161818242-32d2af79-6ad6-43da-bf39-5e488fc00813.png)
+
 
 ## Via the config file
 
